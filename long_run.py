@@ -12,7 +12,8 @@ class StoppableThread(threading.Thread):
 	def stopped(self):
 		return self._stop_event
 
-def start_follow():
-	t = StoppableThread(target=follow.follow)
+def start_follow(room):
+	target = lambda: follow.follow(room)
+	t = StoppableThread(target=target)
 	t.start()
 	return t

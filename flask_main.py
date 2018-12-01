@@ -41,7 +41,15 @@ def locateRoom(name):
 @ask.intent('LeadIntent') # lead me to {location}
 def lead(location):
 	# Add logic to lead person to location
-	task_thread = long_run.start_follow()
+	parts = location.split(' ')
+	room = 0
+	if len(parts) == 2:
+		room_name = parts[1].lower()
+		room_num = room_name - 'a' + 1
+		if room_num < 4 and room_num > 0:
+			room = room_num
+
+	task_thread = long_run.start_follow(room)
 	return question('Moving to {}'.format(location))
 
 @ask.intent('DeliveryIntent') # deliver {item} to {location}

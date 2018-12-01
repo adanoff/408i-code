@@ -47,9 +47,9 @@ def find_middle(frame):
 
 	return np.array([frame_w // 2, frame_h // 2])
 
-def find_turn(img):
+def find_turn(img, room):
 	frame = util.clip_frame(img)
-	tape_mid, tape_angle = find_tape(frame)
+	tape_mid, tape_angle = find_tape(frame, room)
 	im_mid = find_middle(frame)
 
 	if tape_mid is not None and im_mid is not None:
@@ -68,7 +68,7 @@ def find_turn(img):
 	else:
 		return STOP
 
-def find_tape(img):
+def find_tape(img, room_target):
 	global at_marker, marker_count
 	blurred = cv2.GaussianBlur(img, (3, 3), 0)
 	blurred = cv2.medianBlur(blurred, 5)
@@ -95,6 +95,9 @@ def find_tape(img):
 	if np.sum(marker_thresh) > MARKER_MIN:
 		if not at_marker:
 			marker_count += 1
+			if marker_count == room_target:
+				at_marker = True
+				return None, None
 			print("****Found marker: {}".format(marker_count))
 		at_marker = True
 	else: # marker not in the frame
@@ -135,7 +138,7 @@ def find_tape(img):
 
 	return tape_mid, tape_angle
 
-def follow():
+def follow(room):
 	cap = cv2.VideoCapture(0)
 	import comms
 	cmd = comms.Commands()
