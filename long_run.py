@@ -1,7 +1,7 @@
 import threading
 import follow
 
-class StoppableThread(threading.thread):
+class StoppableThread(threading.Thread):
 	def __init__(self, target=None):
 		super(StoppableThread, self).__init__(target=target)
 		self._stop_event = False
@@ -12,5 +12,7 @@ class StoppableThread(threading.thread):
 	def stopped(self):
 		return self._stop_event
 
-def follow():
+def start_follow():
 	t = StoppableThread(target=follow.follow)
+	t.start()
+	return t

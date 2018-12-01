@@ -177,6 +177,7 @@ def follow():
 		else:
 			print("stop")
 			cmd.stop()
+			break
 
 	cv2.destroyAllWindows()
 
