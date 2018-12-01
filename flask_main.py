@@ -1,5 +1,7 @@
 import faces.face_detect
 import cap
+import follow
+import cv2
 
 from flask import Flask
 from flask_ask import Ask, statement, question
@@ -10,7 +12,7 @@ ask = Ask(app, '/')
 task_thread = None
 response = None
 
-capturer = cap.Capturer()
+capturer = cap.Capturer(port=1)
 detector = faces.face_detect.Detector(face_dir='known_faces')
 
 print('Detector created: {}'.format(detector))
@@ -73,6 +75,7 @@ def verifyNurse():
 					break
 				else:
 					response = 'No authorized faces found'
+	cv2.destroyAllWindows()
 	return question(response)
 
 @ask.intent('AMAZON.StopIntent')
@@ -91,6 +94,9 @@ def busyCheck():
 	else:
 		task_thread = None
 		return False
+
+def do_lead():
+	
 
 if __name__ == '__main__':
 	app.run()
