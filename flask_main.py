@@ -1,7 +1,7 @@
 import faces.face_detect
 import cap
-import follow
 import cv2
+import long_run
 
 from flask import Flask
 from flask_ask import Ask, statement, question
@@ -41,7 +41,8 @@ def locateRoom(name):
 @ask.intent('LeadIntent') # lead me to {location}
 def lead(location):
 	# Add logic to lead person to location
-	return question('We have arrived at {}'.format(location))
+	task_thread = long_run.start_follow()
+	return question('Moving to {}'.format(location))
 
 @ask.intent('DeliveryIntent') # deliver {item} to {location}
 def delivery(item,location):
@@ -94,9 +95,6 @@ def busyCheck():
 	else:
 		task_thread = None
 		return False
-
-def do_lead():
-	
 
 if __name__ == '__main__':
 	app.run()
