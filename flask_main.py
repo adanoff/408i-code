@@ -87,6 +87,10 @@ def stop():
 		task_thread.join()
 	return statement('Bye')
 
+@ask.intent('AMAZON.FallbackIntent')
+def fallback():
+	return question('Sorry, I didn\'t understand that')
+
 def busyCheck():
 	global task_thread
 	if task_thread is not None and task_thread.is_alive():
