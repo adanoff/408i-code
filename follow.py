@@ -95,10 +95,11 @@ def find_tape(img, room_target):
 	if np.sum(marker_thresh) > MARKER_MIN:
 		if not at_marker:
 			marker_count += 1
+			print("****Found marker: {}".format(marker_count))
 			if marker_count == room_target:
+				print("*** ROOM TARGET: {}".format(room_target))
 				at_marker = True
 				return None, None
-			print("****Found marker: {}".format(marker_count))
 		at_marker = True
 	else: # marker not in the frame
 		at_marker = False
@@ -142,6 +143,8 @@ def follow(room):
 	cap = cv2.VideoCapture(0)
 	import comms
 	cmd = comms.Commands()
+	global marker_count
+	marker_count = 0
 
 	last_dir = None
 	direction = None
@@ -163,7 +166,7 @@ def follow(room):
 
 		last_dir = direction
 
-		direction = find_turn(frame)
+		direction = find_turn(frame, room)
 		if direction == last_dir:
 			print("No change: still going {}".format(direction))
 			continue
