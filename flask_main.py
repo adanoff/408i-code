@@ -47,7 +47,7 @@ def lead(location):
 		room_name = parts[1].lower()
 		room_num = room_name - 'a' + 1
 		if room_num < 4 and room_num > 0:
-			room = room_num
+			room = int(room_num)
 
 	task_thread = long_run.start_follow(room)
 	return question('Moving to {}'.format(location))
