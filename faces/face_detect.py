@@ -16,6 +16,8 @@ class Detector():
 
         for enc in encodings:
             for person in self.known_faces:
+                if person not in auth_faces:
+                    continue
                 person_enc = self.known_faces[person]
                 if face_recognition.api.compare_faces([person_enc], enc)[0]:
                     return person
